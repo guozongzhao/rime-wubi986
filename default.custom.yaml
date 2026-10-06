@@ -1,0 +1,19 @@
+# default.custom.yaml
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.15.0.0
+  generator: "Rime::SwitcherSettings"
+  modified_time: "Sat Jan 13 12:20:34 2024"
+  rime_version: 1.8.5
+patch:
+  # 设置方案选择快捷键仅为Ctrl+~,取消了默认的F4方案选择快捷键，删除或者加#恢复默认设置
+  "switcher/hotkeys": 
+    - "Control+grave"
+  schema_list:
+    - {schema: wubi986}
+  # 设置Shift直接上屏英文字符并切换为英文状态
+  # 用下面这种格式修改，只会修改Shift_L和Shift_R两个键，其它键位保持默认设置
+  "ascii_composer/switch_key/Shift_L": commit_code
+  "ascii_composer/switch_key/Shift_R": commit_code
+  # 候选词个数设置
+  "menu/page_size": 6

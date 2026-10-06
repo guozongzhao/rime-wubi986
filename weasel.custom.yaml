@@ -1,0 +1,128 @@
+# weasel.custom.yaml — 小狼毫（Windows Rime）外观配置
+#
+# 颜色字节序：0xBBGGRR；带透明度时 0xAABBGGRR（前两位为 alpha）
+# 注意：用「小狼毫输入法设定」程序改外观会整体重写本文件，格式将回到压缩单行
+
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.17.4
+  generator: "Weasel::UIStyleSettings"
+  modified_time: "Mon Sep 28 17:33:19 2026"
+  rime_version: 1.13.1
+
+patch:
+  # =============== 配色方案 ===============
+  "preset_color_schemes/+":
+
+    # 黑水鸭（当前使用）——深灰底 + 金黄高亮 + 红果蓝编码
+    mint_dark_blue:
+      name: 黑水鸭／Mint Dark Blue
+      author: "Mintimate <\"Mintimate's Blog\">"
+      back_color: 0x424242                    # 候选窗背景
+      border_color: 0x424242                  # 边框
+      shadow_color: 0xb4000000                # 阴影（alpha=0xb4）
+      text_color: 0x6495ed                    # 编码文字（红果蓝）
+      candidate_text_color: 0xefefef          # 候选文字
+      comment_text_color: 0xefefef            # 注释文字
+      label_color: 0xefefef                   # 序号文字
+      hilited_back_color: 0x424242            # 编码区高亮背景
+      hilited_candidate_back_color: 0xc6c01a  # 高亮候选背景（金黄）
+      hilited_candidate_text_color: 0xefefef  # 高亮候选文字
+      hilited_candidate_label_color: 0xffffff # 高亮候选序号
+      hilited_comment_text_color: 0xffffff    # 高亮注释文字
+      hilited_label_color: 0xffffff           # 高亮编码序号
+      hilited_text_color: 0xc6c01a            # 高亮编码文字
+
+    # 碧月青——深色底 + 青绿高亮
+    mint_dark_green:
+      name: 碧月青／Mint Dark Green
+      author: "Mintimate <\"Mintimate's Blog\">"
+      back_color: 0x323232                    # 候选窗背景
+      color_space: srgb
+      text_color: 0x83C81C                    # 编码文字（青绿）
+      candidate_text_color: 0xE8E8E8          # 候选文字
+      comment_text_color: 0xBEBEBE            # 注释文字
+      label_color: 0xB0B0B0                   # 序号文字
+      hilited_candidate_back_color: 0x83C81C  # 高亮候选背景
+      hilited_candidate_text_color: 0xEFEFEF  # 高亮候选文字
+      hilited_candidate_label_color: 0xEFEFEF # 高亮候选序号
+      hilited_comment_text_color: 0xF4FAF8    # 高亮注释文字
+      hilited_label_color: 0xEFEFEF           # 高亮编码序号
+      hilited_text_color: 0xed9564            # 高亮编码文字（橙）
+      mutual_exclusive: false
+      text_orientation: horizontal
+      translucency: true
+
+    # 蓝水鸭——浅色底 + 红果蓝编码
+    mint_light_blue:
+      name: 蓝水鸭／Mint Light Blue
+      author: "Mintimate <\"Mintimate's Blog\">"
+      back_color: 0xefefef                    # 候选窗背景
+      border_color: 0xefefef                  # 边框
+      shadow_color: 0xb4000000                # 阴影（alpha=0xb4）
+      text_color: 0x6495ed                    # 编码文字（红果蓝）
+      candidate_text_color: 0x424242          # 候选文字
+      comment_text_color: 0xcac9c8            # 注释文字
+      label_color: 0xcac9c8                   # 序号文字
+      hilited_back_color: 0xefefef            # 编码区高亮背景
+      hilited_candidate_back_color: 0xed9564  # 高亮候选背景（橙）
+      hilited_candidate_text_color: 0xefefef  # 高亮候选文字
+      hilited_candidate_label_color: 0xcac9c8 # 高亮候选序号
+      hilited_comment_text_color: 0xefefef    # 高亮注释文字
+      hilited_label_color: 0xcac9c8           # 高亮编码序号
+      hilited_text_color: 0xed9564            # 高亮编码文字
+
+    # 碧皓青——浅色底 + 青绿高亮
+    mint_light_green:
+      name: 碧皓青／Mint Light Green
+      author: "Mintimate <\"Mintimate's Blog\">"
+      back_color: 0xEFEFEF                    # 候选窗背景
+      color_space: srgb
+      text_color: 0x7BAE4F                    # 编码文字（青绿）
+      candidate_text_color: 0x323232          # 候选文字
+      comment_text_color: 0x878787            # 注释文字
+      label_color: 0x323232                   # 序号文字
+      hilited_candidate_back_color: 0x7BAE4F  # 高亮候选背景
+      hilited_candidate_text_color: 0xFFFFFF  # 高亮候选文字
+      hilited_candidate_label_color: 0xEFEFEF # 高亮候选序号
+      hilited_comment_text_color: 0xDFF0EE    # 高亮注释文字
+      hilited_label_color: 0xEFEFEF           # 高亮编码序号
+      hilited_text_color: 0xed9564            # 高亮编码文字（橙）
+      mutual_exclusive: false
+      text_orientation: horizontal
+      translucency: true
+
+    # 純粹的形式（自定义版）——深灰底 + 白字
+    purity_of_form_custom:
+      name: 純粹的形式／Purity of Form Custom
+      author: "雨過之後、佛振"
+      back_color: 0x545554                    # 候选窗背景
+      border_color: 0x545554                  # 边框
+      shadow_color: 0xb4000000                # 阴影（alpha=0xb4）
+      text_color: 0x808080                    # 编码文字
+      candidate_text_color: 0xEEEEEE          # 候选文字
+      comment_text_color: 0x808080            # 注释文字
+      label_color: 0xBBBBBB                   # 序号文字
+      hilited_candidate_back_color: 0xE3E3E3  # 高亮候选背景
+      hilited_candidate_border_color: 0xE3E3E3 # 高亮候选边框
+      hilited_candidate_text_color: 0x000000  # 高亮候选文字
+      hilited_candidate_label_color: 0x4C4C4C # 高亮候选序号
+      hilited_comment_text_color: 0x808080    # 高亮注释文字
+      hilited_text_color: 0xEEEEEE            # 高亮编码文字
+
+  # =============== 界面样式 ===============
+
+  "style/color_scheme": mint_dark_blue      # 当前配色：黑水鸭
+  "style/comment_font_face": "通用字根, Consolas, Segoe UI Emoji, LXGW WenKai, Singbit, Microsoft Yahei, SimSun, SimSun-ExtB, SimSun-ExtG, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2, TH-Tshyn-P16"
+  # ↑ 「通用字根」必须排第一：拆分注解的 PUA 字根图靠它渲染
+  "style/display_tray_icon": false          # 不显示托盘图标
+  "style/font_face": "Segoe UI Emoji, LXGW WenKai, Microsoft Yahei, SimSun, SimSun-ExtB, SimSun-ExtG, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2, TH-Tshyn-P16"
+  "style/font_point": 14                    # 字号
+  "style/fullscreen": false
+  "style/horizontal": false                 # 竖排候选（旧键，与下行双保险）
+  "style/candidate_list_layout": stacked    # 竖排候选（0.15+ 标准写法）
+  "style/inline_preedit": false             # 编码显示在候选窗内
+  "style/label_format": "%s "
+  "style/layout/candidate_spacing": 10      # 候选项间距
+  "style/layout/min_width": 10              # 候选窗最小宽度
+  "style/preedit_type": composition

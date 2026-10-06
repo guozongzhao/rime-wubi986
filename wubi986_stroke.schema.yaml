@@ -1,0 +1,18 @@
+# Rime settings
+# encoding: utf-8
+
+schema:
+  schema_id: wubi986_stroke
+  name: "笔画反查"
+  version: "2.0"
+  author:
+    - 码表源自行政院国发会 CNS11643 全字库（Kunki Chou 整理）
+    - 超集扩充数据（至 Ext-J）来自宋天
+  description: |
+    伪方案，不能打字。
+    不要选我，不要修改本方案及配套词典。
+    仅用于让部署器编译 wubi986_stroke 反向库，供主方案 wubi986 笔画反查使用。
+
+translator:
+  dictionary: wubi986_stroke
+  enable_user_dict: false

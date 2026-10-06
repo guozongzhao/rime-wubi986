@@ -1,0 +1,2 @@
+# 统一换行符：仓库内一律 LF（与 Rime 上游一致），检出时也不转 CRLF
+* text=auto eol=lf

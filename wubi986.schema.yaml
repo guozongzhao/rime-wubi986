@@ -1,0 +1,185 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: wubi986
+  name: 986五笔
+  version: "21.142"
+  author:
+    - 吟枫舞墨
+  description: |
+    五笔986版
+  dependencies:
+    - pinyin_simp
+    - wubi986_stroke  # 笔画反查码表（h横 s竖 p撇 n捺 z折），重命名避免与其他方案的 stroke.dict.yaml 冲突
+    - wubi986_spelling  # 拆分注解伪词典，部署时编译反向库供 lua_filter 查询
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: extended_charset
+    states: [ 常用, 扩展 ]
+  - name: ascii_punct
+    reset: 0
+    states: [ 。，, ．， ]
+  - name: show_spelling
+    reset: 1
+    states: [ 隐拆, 显拆 ]
+  - name: show_code
+    reset: 1
+    states: [ 隐编, 显编 ]
+  - name: show_pinyin
+    reset: 1
+    states: [ 隐音, 显音 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - reverse_lookup_translator@stroke_reverse  # 笔画反查（与拼音反查共用 ` 引导，按输入内容自动分流）
+    - table_translator
+    - history_translator@history
+    - lua_translator@*wanxiang.shijian  # 日期/时间/农历/节气/节日/周数/时间戳/问候（/引导，移植自万象）
+    - lua_translator@*wanxiang.number_conversion  # 数字/金额大写（/dz 引导，移植自万象）
+  filters:
+    - lua_filter@*wubi986_spelling  # 三重注解：拆分字根+全码+拼音，开关 show_spelling/show_code/show_pinyin
+
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba; # 分号作为引导码，可输入 wubi986.punct 码表中的快符
+  delimiter: " '" # 分号已转为引导码，分隔符只保留空格和单引号
+  max_code_length: 4 # 最长4码
+  auto_select: true # 四码唯一上屏开启，改为false关闭
+  auto_select_pattern: "^;[a-z]$" # 分号引导快符两键直出（需 librime 1.8.5+，不支持时忽略此行退化为菜单确认）
+
+translator:
+  dictionary: wubi986
+  enable_user_dict: false  #固定詞序
+  enable_charset_filter: true  #启用生僻字过滤，使 extended_charset 开关（Ctrl+Shift+5 常用/扩展）生效
+# 先输入`键再输入拼音可实现反查五笔编码
+reverse_lookup:
+  dictionary: pinyin_simp
+  prefix: "`"
+  suffix: "'"
+  tips: 〔拼音〕
+  preedit_format:
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+# 笔画反查：` + hspnz（横竖撇捺折），至少两笔；编码区显示 一丨丿丶乙
+stroke_reverse:
+  tag: stroke_reverse
+  dictionary: wubi986_stroke
+  prefix: "`"
+  suffix: "'"
+  tips: 〔笔画〕
+  preedit_format:
+    - xlit/hspnz/一丨丿丶乙/
+
+punctuator:
+  import_preset: wubi986_symbols      # 合并符号表（预设 symbols ⊕ 万象 wanxiang_symbols，脚本生成，1870 键）；下方显式键再覆盖
+  symbols:
+    # 这里可以自定义一些快捷输入，格式如下
+    "/pi": ["π"]
+    # 默认情况下大写数字是繁体，这里把“叄”和“陸”改成简体字，其它不用变
+    "/3": ["三", "叁", "₃", "³", "Ⅲ", "ⅲ", "③", "➂", "❸", "➌", "⓷", "⑶", "⒊", "３", "㊂", "㈢", "參", "参", "叁", "弎", "仨", "㆔"]
+    "/6": ["六", "陆", "₆", "⁶", "Ⅵ", "ⅵ", "⑥", "➅", "❻", "➏", "⓺", "⑹", "⒍", "６", "㊅", "㈥", "ↅ"]
+    # ---- 万象 lua 触发词让位（2026-10-06）----
+    # 预设 symbols.yaml 的 7 组符号与 lua 快捷输入触发词撞车，原键置空、内容迁移至新编码：
+    "/rq": []  # 日期符号 ㏠~㏾，让位给「日期」
+    "/sj": []  # 时辰符号 ㍘~㍰，让位给「时间」
+    "/xq": []  # 国际象棋，让位给「星期」
+    "/ww": []  # ʬ，让位给「周数」
+    "/jq": []  # 繁体节气，让位给 lua「节气」
+    "/tt": []  # 天体行星，让位给「时间戳」
+    "/dz": []  # 地支，让位给「金额大写」
+    "/rqf": [ ㏠, ㏡, ㏢, ㏣, ㏤, ㏥, ㏦, ㏧, ㏨, ㏩, ㏪, ㏫, ㏬, ㏭, ㏮, ㏯, ㏰, ㏱, ㏲, ㏳, ㏴, ㏵, ㏶, ㏷, ㏸, ㏹, ㏺, ㏻, ㏼, ㏽, ㏾ ]
+    "/sjf": [ ㍘, ㍙, ㍚, ㍛, ㍜, ㍝, ㍞, ㍟, ㍠, ㍡, ㍢, ㍣, ㍤, ㍥, ㍦, ㍧, ㍨, ㍩, ㍪, ㍫, ㍬, ㍭, ㍮, ㍯, ㍰ ]
+    "/xqz": [ ♔, ♕, ♖, ♗, ♘, ♙, ♚, ♛, ♜, ♝, ♞, ♟ ]
+    "/wwz": [ʬ]
+    "/jqz": [ 立春, 雨水, 驚蟄, 春分, 清明, 穀雨, 立夏, 小滿, 芒種, 夏至, 小暑, 大暑, 立秋, 處暑, 白露, 秋分, 寒露, 霜降, 立冬, 小雪, 大雪, 冬至, 小寒, 大寒 ]
+    "/ttz": [ ☄, ☼, ☽, ☾, ☿, ♀, ♁, ♂, ♃, ♄, ♅, ♆, ♇ ]
+    "/dzz": [ 子, 丑, 寅, 卯, 辰, 巳, 午, 未, 申, 酉, 戌, 亥 ]
+    
+  half_shape:
+    # 如果不喜欢下面的设定可以删除，或者在前面加“#”，就变成了默认设置
+    "/": ["/", "／", "÷"]  # 修改"/"键的默认设定
+    "@": "@"  # 修改为，"@"直接上屏
+    "#": "#"  # 修改为，"#"直接上屏"#"
+    "\\": "、"  # 修改为，"\"直接上屏顿号
+key_binder:
+#  import_preset: default    # 不导入默认设置
+# 下面的bindings，是在默认设置的基础上去掉了逗号和句号默认翻页的功能，
+# 这样可以使得句号上屏第一个字并且后面自动补一个句号
+# 如果不想要这个功能就把下面的#删除
+  shijian_keys: ["/"]  # shijian.lua 引导符（日期/时间/农历等快捷输入），如需再加 "o" 双引导可改为 ["/", "o"]
+  bindings:
+    - {accept: "Control+p", send: Up, when: composing}
+    - {accept: "Control+n", send: Down, when: composing}
+    - {accept: "Control+b", send: Left, when: composing}
+    - {accept: "Control+f", send: Right, when: composing}
+    - {accept: "Control+a", send: Home, when: composing}
+    - {accept: "Control+e", send: End, when: composing}
+    - {accept: "Control+d", send: Delete, when: composing}
+    - {accept: "Control+k", send: "Shift+Delete", when: composing}
+    - {accept: "Control+h", send: BackSpace, when: composing}
+    - {accept: "Control+g", send: Escape, when: composing}
+    - {accept: "Control+bracketleft", send: Escape, when: composing}
+    - {accept: "Control+y", send: Page_Up, when: composing}
+    - {accept: "Alt+v", send: Page_Up, when: composing}
+    - {accept: "Control+v", send: Page_Down, when: composing}
+    - {accept: ISO_Left_Tab, send: "Shift+Left", when: composing}
+    - {accept: "Shift+Tab", send: "Shift+Left", when: composing}
+    - {accept: Tab, send: "Shift+Right", when: composing}
+    - {accept: minus, send: Page_Up, when: has_menu}
+    - {accept: equal, send: Page_Down, when: has_menu}
+#    - {accept: comma, send: Page_Up, when: paging}   # 去掉逗号翻页功能
+#    - {accept: period, send: Page_Down, when: has_menu}   # 去掉句号翻页功能
+    - {accept: "Control+Shift+1", select: .next, when: always}
+    - {accept: "Control+Shift+2", toggle: ascii_mode, when: always}
+    - {accept: "Control+Shift+3", toggle: full_shape, when: always}
+    - {accept: "Control+Shift+4", toggle: simplification, when: always}
+    - {accept: "Control+Shift+5", toggle: extended_charset, when: always}
+    - {accept: "Control+Shift+exclam", select: .next, when: always}
+    - {accept: "Control+Shift+at", toggle: ascii_mode, when: always}
+    - {accept: "Control+Shift+numbersign", toggle: full_shape, when: always}
+    - {accept: "Control+Shift+dollar", toggle: simplification, when: always}
+    - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
+    - {accept: semicolon, send: 2, when: has_menu}      #分號次選
+    - {accept: apostrophe, send: 3, when: has_menu}     #撇號三選
+    - {accept: "Control+Shift+H", toggle: show_spelling, when: always}  #显拆/隐拆
+    - {accept: "Control+Shift+J", toggle: show_code, when: always}      #显编/隐编
+    - {accept: "Control+Shift+K", toggle: show_pinyin, when: always}    #显音/隐音
+recognizer:
+  import_preset: default
+  patterns:
+    punct: '^/(?!/)([A-Za-z]+|[!-~]{1,4})$'  # /xx 符号引导：字母不限长（/fh /day）；打印 ASCII 1~4 位覆盖万象组合键（/'e /12 /(1) /-> 等）
+    # 万象移植：数字/金额大写（/dz + 数字，支持小数与负号）
+    number: "^/dz(-|-?[0-9]+[.:]?[0-9]*)$"
+    # 万象移植：日期差 /rc26p（加26天）/rc26-（减26天）/rc20260101-20261231（两日期差）
+    sjc: "^/rc\\d+[-+=op]?$"
+    # 笔画反查：` 后全为 hspnz（≥2 键）时走笔画；其余走拼音反查。
+    # 拼音模式用负向预查排除纯笔画输入，两模式互斥，与遍历顺序无关。
+    stroke_reverse: "`[hspnz]{2,}'?$"
+    reverse_lookup: "`(?![hspnz]{2,}'?$)[a-z]*'?$"
+# Z键重复录入
+history:
+  input: z
+  size: 1
+  initial_quality: 9999
