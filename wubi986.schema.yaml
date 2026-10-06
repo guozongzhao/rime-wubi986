@@ -3,7 +3,7 @@
 
 schema:
   schema_id: wubi986
-  name: 986五笔
+  name: 五笔986  # 汉字开头：macOS/Linux 托盘指示器取方案名首字符显示（数字开头会显示成"9"）
   version: "21.142"
   author:
     - 吟枫舞墨
