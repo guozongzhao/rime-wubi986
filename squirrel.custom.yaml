@@ -119,7 +119,7 @@ patch:
   "style/candidate_format": "%@"            # 只显示候选词、隐藏编号（原文件保留项；Squirrel 1.0 起推荐 '[candidate]'）
   "style/font_point": 14
   "style/font_face": "PingFang SC, LXGW WenKai, Hiragino Sans GB, STHeiti SC, Singbit"
-  "style/comment_font_face": "Monaco, Menlo, SF Mono, Singbit, PingFang SC"
+  "style/comment_font_face": "986WB, 通用字根, Monaco, Menlo, SF Mono, Singbit, PingFang SC"
   "style/label_format": "%s "
   "style/line_spacing": 5                   # 竖排时候选项行距
   "style/spacing": 8                        # 编码区与候选区间距

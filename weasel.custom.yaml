@@ -113,8 +113,9 @@ patch:
   # =============== 界面样式 ===============
 
   "style/color_scheme": mint_dark_blue      # 当前配色：黑水鸭
-  "style/comment_font_face": "通用字根, Consolas, Segoe UI Emoji, LXGW WenKai, Singbit, Microsoft Yahei, SimSun, SimSun-ExtB, SimSun-ExtG, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2, TH-Tshyn-P16"
-  # ↑ 「通用字根」必须排第一：拆分注解的 PUA 字根图靠它渲染
+  "style/comment_font_face": "986WB, 通用字根, Consolas, Segoe UI Emoji, LXGW WenKai, Singbit, Microsoft Yahei, SimSun, SimSun-ExtB, SimSun-ExtG, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2, TH-Tshyn-P16"
+  # ↑ 「986WB」为主字体（986 官方字根字体，Plane-15 PUA 字根图）；「通用字根」兜底
+  #   少量 GBK 生僻字旧编码（BMP 私有区 U+E000 段）字根，二者都装才能全覆盖
   "style/display_tray_icon": false          # 不显示托盘图标
   "style/font_face": "Segoe UI Emoji, LXGW WenKai, Microsoft Yahei, SimSun, SimSun-ExtB, SimSun-ExtG, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2, TH-Tshyn-P16"
   "style/font_point": 14                    # 字号

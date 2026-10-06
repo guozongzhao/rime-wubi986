@@ -6,7 +6,7 @@
 
 - **四码定长输入**：四码唯一自动上屏，`enable_user_dict: false` 固定词序，符合五笔用户习惯
 - **分号快符**：`;` + 字母两键直出常用标点（映射取自虎码官方码表），如 `;a`→！ `;d`→、`;i`→——
-- **拆分注解**：候选旁显示 `〔 字根拆分 · 编码 · 拼音 · (频序) 〕` 三重注解，`Ctrl+Shift+H/J/K` 独立开关（需安装「通用字根」字体渲染字根图）
+- **拆分注解**：候选旁显示 `〔 字根拆分 · 编码 · 拼音 · (频序) 〕` 三重注解，`Ctrl+Shift+H/J/K` 独立开关（需安装「986WB」字体渲染字根图）
 - **双路反查**：`` ` `` 引导，纯笔画键（h横 s竖 p撇 n捺 z折，≥2 笔）自动走笔画反查，其余走拼音反查，正则互斥分流
 - **万象快捷输入**（移植自 [amzxyz/rime_wanxiang](https://github.com/amzxyz/rime_wanxiang)，零依赖 Lua）：
   - `/rq` `/sj` `/dt` `/tt` 日期 / 时间 / 日期时间 / 时间戳
@@ -20,7 +20,7 @@
 ## 安装
 
 1. 安装 [小狼毫](https://rime.im/download/)（Windows）或 [鼠须管](https://rime.im/download/)（macOS）
-2. **安装字根字体**：双击 [`font/zigen.ttf`](font/zigen.ttf)（字体名「通用字根」，渲染拆分注解的字根图必需）→ 点「安装」
+2. **安装字根字体**：双击 [`font/986WB.otf`](font/986WB.otf)（字体名「986WB」，渲染拆分注解的字根图必需）→ 点「安装」；建议同时安装 [`font/zigen.ttf`](font/zigen.ttf)（字体名「通用字根」，兜底少量 GBK 生僻字旧编码字根）
 3. 将本仓库全部文件复制到用户目录：
    - Windows：`%APPDATA%\Rime`
    - macOS：`~/Library/Rime`
@@ -39,7 +39,8 @@
 ├── wubi986_stroke.*           # 笔画反查词典
 ├── pinyin_simp.*              # 拼音反查依赖
 ├── lua/                       # Lua 过滤器与翻译器
-├── font/zigen.ttf             # 通用字根字体（拆分注解字根图渲染）
+├── font/986WB.otf             # 986WB 字根字体（拆分注解字根图渲染，主）
+├── font/zigen.ttf             # 通用字根字体（GBK 生僻字旧编码字根兜底）
 ├── weasel.custom.yaml         # Windows 外观
 └── squirrel.custom.yaml       # macOS 外观
 ```
@@ -48,12 +49,13 @@
 
 | 内容 | 来源 | 许可 |
 |---|---|---|
-| 986 五笔码表 v21.142 | 吟枫舞墨（制作）／亮亮亮（Rime 打包） | 随原包分发 |
+| 986 五笔码表 v21.142 | 吟枫舞墨（制码） | 随原包分发 |
 | 拆分注解伪词典 | 权御五笔（qxwubi986）配套 | 随原包分发 |
 | `lua/wanxiang/shijian.lua`<br>`lua/wanxiang/number_conversion.lua` | [amzxyz/rime_wanxiang](https://github.com/amzxyz/rime_wanxiang) | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)（有改动：金额触发引导 R→/dz） |
 | `wubi986_stroke.dict.yaml` | [rime/rime-stroke](https://github.com/rime/rime-stroke) | [LGPL-3.0](https://www.gnu.org/licenses/lgpl-3.0.html)（有重命名） |
 | 分号快符映射 | 虎码官方码表 | 随原包分发 |
-| `font/zigen.ttf`（通用字根字体，渲染拆分注解字根图） | 986 五笔社区（权御系）发行包 | 版权归原作者所有，为方便使用随仓库分发，如有侵权请告知移除 |
+| `font/986WB.otf`（986WB 字根字体，渲染拆分注解字根图） | 986 五笔社区（986 字根练习发行包） | 版权归原作者所有，为方便使用随仓库分发，如有侵权请告知移除 |
+| `font/zigen.ttf`（通用字根字体，兜底 GBK 生僻字旧编码字根） | 986 五笔社区（权御系）发行包 | 版权归原作者所有，为方便使用随仓库分发，如有侵权请告知移除 |
 | `weasel.custom.yaml` / `squirrel.custom.yaml`<br>中的五个配色（黑水鸭、碧月青、蓝水鸭、碧皓青、純粹的形式） | [Mintimate/oh-my-rime](https://github.com/Mintimate/oh-my-rime)（薄荷拼音） | [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html)（有适配改动：横排布局、删除 candidate_list_layout、mac 字体栈） |
 
 其余方案配置为本项目整理与修改，按仓库整体以 CC-BY-4.0 提供。
