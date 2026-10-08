@@ -2,7 +2,7 @@
 -- 依赖：wubi986_spelling 伪词典（schema/dependencies 触发编译反向库）
 -- 开关：show_spelling（显拆/隐拆）show_code（显编/隐编）show_pinyin（显音/隐音）
 -- 接线：engine/filters 下挂 lua_filter@*wubi986_spelling（模块模式）
--- 兼容：librime-lua（Weasel 0.15+ 内置），标准 Weasel 与 RimeUI 通用
+-- 兼容：librime-lua（Weasel 0.15+ 内置）
 -- 性能：查表结果按字缓存（memo），三开关全关时直通零查询
 
 local M = {}
