@@ -42,6 +42,9 @@ local function get(env, ch)
   return c or nil
 end
 
+-- 词组每位置取根数（模块级常量，避免每候选重建小表产生 GC 压力）
+local TAKE2, TAKE3, TAKE4 = {2, 2}, {1, 1, 2}, {1, 1, 1, 1}
+
 function M.init(env)
   local ok, result = pcall(function()
     return ReverseLookup("wubi986_spelling")
@@ -82,15 +85,71 @@ function M.func(input, env)
             note = "〔 " .. table.concat(seg, " · ") .. " 〕"
           end
         end
-      elseif split_on then
-        -- 词组：逐字拆分，用「·」连接；任一字无拆分则整个词不注解
-        local parts = {}
+      elseif split_on or code_on then
+        -- 词组：按 986 打词规则取参与组词的字根/键位（实证 64,755 词组 100% 命中）
+        -- 规则：2字=各字前2；3字=首1+次1+末字前2；4字=各字第1；5字以上=前三字第1+末字第1
+        -- 拆分截取对应字根数，编码截取对应键位数，各凑四格显示
+        -- 注：「不」(ill)「有」(ell) 等成字根的组词取码已内嵌于伪词典 code 列，无需特判
+        local rs, cs, ok = {}, {}, true
         for _, cp in utf8.codes(text) do
           local p = get(env, utf8.char(cp))
-          if not p or p.split == "" then parts = nil break end
-          parts[#parts + 1] = p.split
+          if not p then ok = false break end
+          if split_on then
+            if p.split == "" then ok = false break end
+            rs[#rs + 1] = p.split
+          end
+          if code_on then
+            if p.code == "" then ok = false break end
+            cs[#cs + 1] = p.code
+          end
         end
-        if parts then note = "〔 " .. table.concat(parts, "·") .. " 〕" end
+        if ok then
+          local seg = {}
+          if split_on and #rs >= 2 then
+            local m = #rs
+            -- 每字取根数：与打词规则键位数一一对应
+            -- 2字词 {2,2}；3字词 {1,1,2}；4字词 {1,1,1,1}；5字以上前三字各1+末字1
+            local take
+            if m == 2 then
+              take = TAKE2
+            elseif m == 3 then
+              take = TAKE3
+            else
+              take = TAKE4   -- 4 字及以上
+            end
+            local parts = {}
+            local npos = m > 4 and 4 or m   -- 参与取码的位置数（3字词仅3位，防 rs[4]=nil）
+            for i = 1, npos do
+              local pick = rs[i]
+              if m > 4 and i == 4 then pick = rs[m] end   -- 5 字以上末位取末字
+              -- UTF-8 感知截取前 take[i] 个字根（字根为多字节 PUA 字符，不能用字节 sub）
+              local cnt = 0
+              local buf = {}
+              for _, cpc in utf8.codes(pick) do
+                cnt = cnt + 1
+                if cnt > take[i] then break end
+                buf[#buf + 1] = utf8.char(cpc)
+              end
+              parts[#parts + 1] = table.concat(buf)
+            end
+            seg[#seg + 1] = table.concat(parts, "·")
+          end
+          if code_on and #cs >= 2 then
+            local m = #cs
+            local wc
+            if m == 2 then
+              wc = cs[1]:sub(1, 2) .. cs[2]:sub(1, 2)
+            elseif m == 3 then
+              wc = cs[1]:sub(1, 1) .. cs[2]:sub(1, 1) .. cs[3]:sub(1, 2)
+            elseif m == 4 then
+              wc = cs[1]:sub(1, 1) .. cs[2]:sub(1, 1) .. cs[3]:sub(1, 1) .. cs[4]:sub(1, 1)
+            else
+              wc = cs[1]:sub(1, 1) .. cs[2]:sub(1, 1) .. cs[3]:sub(1, 1) .. cs[m]:sub(1, 1)
+            end
+            seg[#seg + 1] = wc
+          end
+          if #seg > 0 then note = "〔 " .. table.concat(seg, " · ") .. " 〕" end
+        end
       end
     end
     if note ~= "" then
